@@ -1,3 +1,6 @@
+import {Pokemon} from "./Pokemon";
+
 export const App = () => {
- return <h1>Hello Pokemon</h1>;
+ return <Pokemon />;
 };
+
