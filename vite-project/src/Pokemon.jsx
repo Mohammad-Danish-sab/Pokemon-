@@ -70,7 +70,7 @@ export const Pokemon = () => {
         </div>
         <div>
           <ul className="cards">
-            {pokemon.map((curPokemon) => {
+            {searchData.map((curPokemon) => {
               return (
                 <PokemonCards key={curPokemon.id} pokemonData={curPokemon} />
               );
