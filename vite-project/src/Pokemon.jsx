@@ -5,6 +5,8 @@ import "./App.css";
 export const Pokemon = () => {
   const [pokemon, setPokemon] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [search, setSearch] = useState("");
 
   // Correct API endpoint for a list of Pokémon
   const API = "https://pokeapi.co/api/v2/pokemon?limit=60";
@@ -24,6 +26,8 @@ export const Pokemon = () => {
       setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
+      setError(error);
     }
   };
 
@@ -31,10 +35,21 @@ export const Pokemon = () => {
     fetchPokemon();
   }, []);
 
+  const searchData = pokemon.filter((curPokemon) =>
+    curPokemon.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   if (loading) {
     return (
       <div>
         <h1>Loading....</h1>
+      </div>
+    );
+  }
+  if(error) {
+    return (
+      <div>
+        <h1>{error.message}</h1>
       </div>
     );
   }
@@ -45,6 +60,14 @@ export const Pokemon = () => {
         <header>
           <h1>Lets Catch Pokemon</h1>
         </header>
+        <div className="pokemon-search">
+          <input
+            type="text"
+            placeholder="search Pokemon"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
         <div>
           <ul className="cards">
             {pokemon.map((curPokemon) => {
