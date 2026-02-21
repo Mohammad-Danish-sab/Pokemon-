@@ -7,9 +7,10 @@ export const Pokemon = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
+  const [visibleCount, setVisibleCount] = useState(12);
 
   // Correct API endpoint for a list of Pokémon
-  const API = "https://pokeapi.co/api/v2/pokemon?limit=60";
+  const API = "https://pokeapi.co/api/v2/pokemon?limit=100";
 
   const fetchPokemon = async () => {
     try {
@@ -70,7 +71,7 @@ export const Pokemon = () => {
         </div>
         <div>
           <ul className="cards">
-            {searchData.map((curPokemon) => {
+            {searchData.slice(0, visibleCount).map((curPokemon) => {
               return (
                 <PokemonCards key={curPokemon.id} pokemonData={curPokemon} />
               );

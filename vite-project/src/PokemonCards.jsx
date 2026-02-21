@@ -3,12 +3,10 @@ import "./App.css";
 export const PokemonCards = ({ pokemonData }) => {
   if (!pokemonData) return null;
 
-  // Safer image access
   const image =
     pokemonData?.sprites?.other?.dream_world?.front_default ||
     pokemonData?.sprites?.front_default;
 
-  // Find stats safely
   const speedStat = pokemonData.stats.find(
     (stat) => stat.stat.name === "speed",
   )?.base_stat;
