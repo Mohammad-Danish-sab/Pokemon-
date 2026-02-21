@@ -8,9 +8,16 @@ export const Pokemon = () => {
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
   const [visibleCount, setVisibleCount] = useState(12);
+   const [selectedType, setSelectedType] = useState("all");
+   const [favorites, setFavorites] = useState(
+     JSON.parse(localStorage.getItem("favorites")) || [],
+   );
+   const [selectedPokemon, setSelectedPokemon] = useState(null);
 
   // Correct API endpoint for a list of Pokémon
-  const API = "https://pokeapi.co/api/v2/pokemon?limit=100";
+  const API = "https://pokeapi.co/api/v2/pokemon?limit=200";
+
+  const allTypes = ["all", "fire", "water", "grass", "electric"];
 
   const fetchPokemon = async () => {
     try {
@@ -33,12 +40,42 @@ export const Pokemon = () => {
   };
 
   useEffect(() => {
-    fetchPokemon();
+    const fetchData = async () => {
+      const res = await fetch(API);
+      const data = await res.json();
+
+      const detailed = await Promise.all(
+        data.results.map(async (p) => {
+          const res = await fetch(p.url);
+          return await res.json();
+        }),
+      );
+
+      setPokemon(detailed);
+    };
+
+    fetchData();
   }, []);
+
+    useEffect(() => {
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+    }, [favorites]);
 
   const searchData = pokemon.filter((curPokemon) =>
     curPokemon.name.toLowerCase().includes(search.toLowerCase())
-  );
+  )
+   .filter((p) => {
+      if (selectedType === "all") return true;
+      return p.types.some((t) => t.type.name === selectedType);
+    });
+
+     const toggleFavorite = (id) => {
+       if (favorites.includes(id)) {
+         setFavorites(favorites.filter((fav) => fav !== id));
+       } else {
+         setFavorites([...favorites, id]);
+       }
+     };
 
   if (loading) {
     return (

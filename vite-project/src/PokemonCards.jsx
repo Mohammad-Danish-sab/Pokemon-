@@ -52,6 +52,14 @@ export const PokemonCards = ({ pokemonData }) => {
           <span>Attack:</span>
         </div>
 
+        {/* {visibleCount < searchData.length && (
+          <button
+            className="load-more"
+            onClick={() => setVisibleCount((prev) => prev + 12)}
+          >
+            Load More
+          </button>
+        )} */}
         <div className="pokemon-info">
           <p>
             {pokemonData.abilities
